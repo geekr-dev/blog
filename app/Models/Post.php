@@ -9,6 +9,9 @@ class Post extends Model
 {
     use HasFactory;
 
+    const STATUS_DRAFT = 1;
+    const STATUS_PUBLISHED = 0;
+
     public $fillable = [
         'title',
         'slug',
