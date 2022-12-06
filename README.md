@@ -13,6 +13,21 @@ Blog Demo App with Laravel9 + Inertia + Vue3
 
 Step:
 
-1. `cp .env.example .env` && adjust db config in `.env`
+0. `composer install`
+1. `cp .env.example .env` and config db in `.env`
 2. `php artisan migrate`
 3. `php db:seed`
+4. `npm install && npm run build`
+5. `php artisan serve`
+
+Open `http://localhost:8000/register` in browser and register a new user, then you can view all posts via `http://localhost:8000/posts`:
+
+![image-20221207002955736](https://image.gstatics.cn/2022/12/07/image-20221207002955736.png)
+
+Click the "New Post" button create create new post:
+
+![image-20221207003324448](https://image.gstatics.cn/2022/12/07/image-20221207003324448.png)
+
+Or "Edit" button from Posts Indexn Page to edit an exist post:
+
+![image-20221207003348154](https://image.gstatics.cn/2022/12/07/image-20221207003348154.png)
