@@ -12,12 +12,6 @@ class Post extends Model
     const STATUS_DRAFT = 1;
     const STATUS_PUBLISHED = 0;
 
-    public $fillable = [
-        'title',
-        'slug',
-        'content',
-    ];
-
     public function author()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');

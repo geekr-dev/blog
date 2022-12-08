@@ -9,7 +9,6 @@ const props = defineProps({
     },
 });
 
-
 const form = useForm({
     title: '',
     slug: '',
