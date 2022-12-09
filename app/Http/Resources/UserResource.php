@@ -2,18 +2,23 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Http\Resources\Json\JsonResource;
+use TiMacDonald\JsonApi\JsonApiResource;
+use TiMacDonald\JsonApi\Link;
 
-class UserResource extends JsonResource
+class UserResource extends JsonApiResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
-     */
-    public function toArray($request)
+    public function toAttributes($request): array
     {
-        return parent::toArray($request);
+        return [
+            'name' => $this->name,
+        ];
+    }
+
+    public function toLinks($request): array
+    {
+        return [
+            Link::self(route('users.show', $this->id)),
+            'related' => 'http://example.com/related',
+        ];
     }
 }

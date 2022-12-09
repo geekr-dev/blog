@@ -30,5 +30,11 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::resource('posts', PostController::class);
+Route::get('posts/{post}/comments/{comment}', function () {
+    // ... show comment
+})->name('posts.comments.show');
+Route::get('user/{user}', function () {
+    // ... show author
+})->name('users.show');
 
 require __DIR__ . '/auth.php';

@@ -3,6 +3,7 @@
 use App\Http\Resources\PostResource;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,4 +23,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('posts/{post}', function (Request $request, Post $post) {
     return new PostResource($post->load(['author', 'comments']));
+});
+
+Route::get('posts', function (Request $request) {
+    return PostResource::collection(Post::with('author')->get());
 });

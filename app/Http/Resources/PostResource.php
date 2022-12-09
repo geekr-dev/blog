@@ -2,32 +2,35 @@
 
 namespace App\Http\Resources;
 
-use Carbon\Carbon;
-use Illuminate\Http\Resources\Json\JsonResource;
+use TiMacDonald\JsonApi\JsonApiResource;
+use TiMacDonald\JsonApi\Link;
 
-class PostResource extends JsonResource
+class PostResource extends JsonApiResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
-     */
-    public function toArray($request)
+    public function toAttributes($request): array
     {
         return [
-            'id' => $this->id,
             'title' => $this->title,
             'slug' => $this->slug,
             'content' => $this->content,
             'views' => $this->views,
             'created_at' => $this->created_at->toDateTimeString(),
             'updated_at' => $this->updated_at->toDateTimeString(),
-            'relations' => [
-                'author' => $this->author,
-                'comments' => $this->comments
-            ]
         ];
-        //return parent::toArray($request);
+    }
+
+    public function toRelationships($request): array
+    {
+        return [
+            'author' => fn () => new UserResource($this->author),
+            'comments' => fn () => CommentResource::collection($this->comments),
+        ];
+    }
+
+    public function toLinks($request): array
+    {
+        return [
+            Link::self(route('posts.show', $this->id)),
+        ];
     }
 }
