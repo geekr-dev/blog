@@ -3,8 +3,10 @@
 use App\Http\Resources\PostResource;
 use App\Models\Post;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Route;
+use Spatie\QueryBuilder\QueryBuilder;
+
+use function Termwind\ask;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,10 +23,21 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('posts/{post}', function (Request $request, Post $post) {
-    return new PostResource($post->load(['author', 'comments']));
+Route::get('posts/{id}', function (Request $request, int $id) {
+    $post =  QueryBuilder::for(Post::where('id', $id))
+        ->allowedFields(['id', 'title', 'content', 'views', 'created_at', 'authors.id', 'authors.name'])
+        ->allowedIncludes(['author', 'comments'])
+        ->first();
+    return new PostResource($post);
 });
 
 Route::get('posts', function (Request $request) {
-    return PostResource::collection(Post::with('author')->get());
+    $posts = QueryBuilder::for(Post::class)
+        ->allowedFields(['id', 'title', 'content', 'views', 'created_at', 'authors.id', 'authors.name'])
+        ->allowedFilters(['title'])
+        ->defaultSort('-id')
+        ->allowedSorts(['views', 'created_at'])
+        ->allowedIncludes('author')
+        ->paginate(10);
+    return PostResource::collection($posts);
 });

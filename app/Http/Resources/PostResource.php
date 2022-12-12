@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Illuminate\Support\Arr;
 use TiMacDonald\JsonApi\JsonApiResource;
 use TiMacDonald\JsonApi\Link;
 
@@ -9,14 +10,7 @@ class PostResource extends JsonApiResource
 {
     public function toAttributes($request): array
     {
-        return [
-            'title' => $this->title,
-            'slug' => $this->slug,
-            'content' => $this->content,
-            'views' => $this->views,
-            'created_at' => $this->created_at->toDateTimeString(),
-            'updated_at' => $this->updated_at->toDateTimeString(),
-        ];
+        return Arr::except($this->resource->toArray(), ['id', 'author', 'comments']);
     }
 
     public function toRelationships($request): array
@@ -30,7 +24,7 @@ class PostResource extends JsonApiResource
     public function toLinks($request): array
     {
         return [
-            Link::self(route('posts.show', $this->id)),
+            Link::self(route('posts.show', $this->resource)),
         ];
     }
 }

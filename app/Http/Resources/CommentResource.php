@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Illuminate\Support\Arr;
 use TiMacDonald\JsonApi\JsonApiResource;
 use TiMacDonald\JsonApi\Link;
 
@@ -9,9 +10,7 @@ class CommentResource extends JsonApiResource
 {
     public function toAttributes($request): array
     {
-        return [
-            'content' => $this->content,
-        ];
+        return Arr::only($this->resource->toArray(), ['id']);
     }
 
     public function toRelationships($request): array
